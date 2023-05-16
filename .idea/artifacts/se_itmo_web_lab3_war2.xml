@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="se-itmo-web-lab3:war2">
+    <output-path>$PROJECT_DIR$/out/artifacts/se_itmo_web_lab3_war2</output-path>
+    <root id="archive" name="se-itmo-web-lab3_war.war">
+      <element id="artifact" artifact-name="se-itmo-web-lab3:war exploded" />
+    </root>
+  </artifact>
+</component>

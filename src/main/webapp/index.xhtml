@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/borderLayout.xhtml">
+    <ui:define name="head">
+        <title>#{msg['titles.start']}</title>
+    </ui:define>
+    <ui:define name="content">
+        <p:button styleClass="ui-button-outlined ui-button-success" outcome="main" value="#{msg['button.start']}"/>
+    </ui:define>
+</ui:composition>
+
+</html>

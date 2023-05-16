@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/borderLayout.xhtml">
+   <ui:define name="head">
+      <title>#{msg['titles.start']}</title>
+   </ui:define>
+   <ui:define name="content">
+      <p:card id="graph__wrapper" styleClass="content__block">
+         <canvas id="graph"/>
+      </p:card>
+      <p:card styleClass="content__block">
+         <h:form id="my-form" >
+            <h:inputHidden id="input-x" value="#{task.enteringBean.x}"/>
+            <p:remoteCommand name="addResult" action="#{task.addResult}" style="display: none;" />
+            <h3 class="mt-0">X</h3>
+            <div class="grid ui-fluid">
+               <ui:repeat value="#{task.availableXValues()}" var="x">
+                  <p:selectBooleanCheckbox value="#{task.getXMap()[x]}" itemLabel="#{x}" disabled="#{task.getXMap()[x]}">
+                     <f:ajax listener="#{task.xChanged}"/>
+                  </p:selectBooleanCheckbox>
+               </ui:repeat>
+            </div>
+            <h3 class="mt-0">Y [#{task.getMinY()}, #{task.getMaxY()}]</h3>
+            <p:inputText id="input-y" value="#{task.enteringBean.y}" valueChangeListener="#{task.yChanged}">
+               <f:validator validatorId="validatorY"/>
+               <f:ajax event="change"/>
+            </p:inputText>
+            <h3 class="mt-0">R</h3>
+            <div id="r-group">
+               <h:outputScript>function initR() { return #{task.enteringBean.r}}</h:outputScript>
+               <h:inputHidden id="r-value" value="#{task.enteringBean.r}"/>
+               <ui:repeat value="#{task.availableRValues()}" var="r">
+                  <p:commandLink style="font-size: 1.25em" styleClass="mr-4" disabled="#{task.getRMap()[r]}" value="#{r}" action="#{task.rChanged(r)}" oncomplete="setR(args.r)"/>
+               </ui:repeat>
+            </div>
+            <div id="button-group" class="button-group">
+               <p:commandButton id="submit-button" type="submit" value="#{msg['form.submit']}" action = "#{task.addResult()}" update="results-table"/>
+               <p:commandButton type="submit" value="#{msg['form.clear']}"  action="#{task.clearResults()}" update="results-table" oncomplete="draw({r: rValue})"/>
+            </div>
+         </h:form>
+      </p:card>
+      <p:card styleClass="content__block table__wrapepr">
+         <p:dataTable id="results-table" var="result" value="#{task.resultList}"
+                      emptyMessage="">
+            <p:column headerText="X">
+               <h:outputText value="#{result.x}" />
+            </p:column>
+
+            <p:column headerText="Y">
+               <h:outputText value="#{result.y}" />
+            </p:column>
+
+            <p:column headerText="R">
+               <h:outputText value="#{result.r}" />
+            </p:column>
+
+            <p:column headerText="?" styleClass="#{result.hit ? 'hit' : 'miss'}">
+               <h:outputText value="#{msg[result.hit ? 'result.type.BINGO' : 'result.type.FAIL']}"/>
+            </p:column>
+         </p:dataTable>
+      </p:card>
+   </ui:define>
+</ui:composition>
+
+</html>
